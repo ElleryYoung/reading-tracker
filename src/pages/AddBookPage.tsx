@@ -20,6 +20,10 @@ const API_BASE = 'https://www.googleapis.com/books/v1/volumes'
 const API_KEY = import.meta.env.VITE_GOOGLE_BOOKS_API_KEY as string | undefined
 const KEY_PARAM = API_KEY ? `&key=${API_KEY}` : ''
 
+// 豆瓣图书搜索代理（Cloudflare Worker），部署方法见 workers/douban-proxy.js。
+// 留空则自动跳过豆瓣源，仅使用 Google Books + Open Library。
+const DOUBAN_PROXY_URL = ''
+
 function normalizeCover(url?: string): string | undefined {
   if (!url) return undefined
   let u = url.replace(/^http:\/\//, 'https://')
@@ -49,10 +53,54 @@ function toResult(v: GBookVolume): SearchResult | null {
   }
 }
 
+interface DoubanBook {
+  id: string
+  title: string
+  authors: string[]
+  publisher?: string
+  publishedDate?: string
+  coverUrl?: string
+  rating?: number
+  abstract?: string
+}
+
+function toDoubanResult(b: DoubanBook): SearchResult {
+  return {
+    id: b.id,
+    title: b.title,
+    authors: b.authors,
+    publisher: b.publisher,
+    publishedDate: b.publishedDate,
+    description: b.abstract,
+    categories: [],
+    coverUrl: b.coverUrl,
+  }
+}
+
+async function fetchDouban(query: string, signal: AbortSignal): Promise<SearchResult[]> {
+  const res = await fetch(
+    `${DOUBAN_PROXY_URL}?q=${encodeURIComponent(query)}`,
+    { signal },
+  )
+  if (!res.ok) throw new Error(`HTTP ${res.status}`)
+  const data = (await res.json()) as { books?: DoubanBook[] }
+  return (data.books ?? []).map(toDoubanResult)
+}
+
 async function fetchVolumes(query: string, signal: AbortSignal): Promise<SearchResult[]> {
+  const isAbort = (err: unknown) => err instanceof DOMException && err.name === 'AbortError'
+  // 1. 豆瓣：中文书最全（需自部署 Worker，见 workers/douban-proxy.js）
+  if (DOUBAN_PROXY_URL) {
+    try {
+      const r = await fetchDouban(query, signal)
+      if (r.length > 0) return r
+    } catch (err) {
+      if (isAbort(err)) throw err
+    }
+  }
+  // 2. Google Books：中文优先，不限语言兜底
   const q = encodeURIComponent(query)
   try {
-    // Try zh-restricted first; fall back to unrestricted when it returns nothing
     const first = await fetch(`${API_BASE}?q=${q}&maxResults=12&langRestrict=zh${KEY_PARAM}`, { signal })
     if (!first.ok) throw new Error(`HTTP ${first.status}`)
     const firstData = (await first.json()) as { items?: GBookVolume[] }
@@ -66,10 +114,9 @@ async function fetchVolumes(query: string, signal: AbortSignal): Promise<SearchR
     const results = items.map(toResult).filter((r): r is SearchResult => r !== null)
     if (results.length > 0) return results
   } catch (err) {
-    // Aborted searches must propagate; other failures (quota, network) fall through
-    // to the Open Library mirror below.
-    if (err instanceof DOMException && err.name === 'AbortError') throw err
+    if (isAbort(err)) throw err
   }
+  // 3. Open Library：免费无 key，但中文书覆盖差
   return fetchOpenLibrary(query, signal)
 }
 
@@ -234,7 +281,7 @@ export default function AddBookPage() {
               className="h-[150px] w-[150px] object-contain"
             />
             <p className="mt-3 text-[15px] leading-[1.6] text-ink-muted">
-              输入关键词，从 Google Books 搜索
+              输入书名或作者，开始搜索
             </p>
           </motion.div>
         )}
