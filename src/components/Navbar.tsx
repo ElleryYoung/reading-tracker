@@ -78,7 +78,7 @@ export default function Navbar() {
       <header className="sticky top-0 z-50 hidden border-b border-line bg-card2/90 backdrop-blur-sm lg:block">
         <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-6">
           <Link to="/" className="flex items-center gap-2.5">
-            <img src="/logo-mark.svg" alt="" className="h-7 w-7" />
+            <img src={`${import.meta.env.BASE_URL}logo-mark.svg`} alt="" className="h-7 w-7" />
             <span className="font-display text-[18px] font-semibold text-ink-primary">
               阅读记录 · Reading Log
             </span>

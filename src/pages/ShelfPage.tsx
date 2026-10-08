@@ -230,7 +230,7 @@ export default function ShelfPage() {
       <div className="mt-5">
         {books.length === 0 ? (
           <EmptyState
-            image="/illu-empty-shelf.png"
+            image={`${import.meta.env.BASE_URL}illu-empty-shelf.png`}
             title="书架还是空的"
             body="去搜索添加你的第一本书吧"
             actionLabel="添加书籍"
@@ -239,7 +239,7 @@ export default function ShelfPage() {
         ) : filtered.length === 0 ? (
           <div className="flex flex-col items-center py-10 text-center">
             <img
-              src="/illu-empty-shelf.png"
+              src={`${import.meta.env.BASE_URL}illu-empty-shelf.png`}
               alt=""
               width={120}
               height={120}

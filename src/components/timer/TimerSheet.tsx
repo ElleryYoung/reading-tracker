@@ -173,7 +173,7 @@ function PickerPhase({
     return (
       <div className="flex flex-col items-center px-6 pb-10 pt-2 text-center">
         <SheetHeader title="开始阅读计时" onClose={onClose} />
-        <img src="/illu-timer.png" alt="" className="mt-4 h-[140px] w-[140px] object-contain" />
+        <img src={`${import.meta.env.BASE_URL}illu-timer.png`} alt="" className="mt-4 h-[140px] w-[140px] object-contain" />
         <p className="mt-4 text-[15px] leading-[1.6] text-ink-muted">先添加一本书再开始计时</p>
         <button
           type="button"
@@ -820,7 +820,7 @@ function SheetHeader({
   return (
     <div className="flex items-center justify-between px-1 pb-2 pt-1">
       <div className="flex items-center gap-2">
-        <img src="/logo-mark.svg" alt="" className="h-5 w-5" />
+        <img src={`${import.meta.env.BASE_URL}logo-mark.svg`} alt="" className="h-5 w-5" />
         <h2 className="font-display text-[19px] font-semibold leading-[1.3] text-ink-primary">
           {title}
         </h2>

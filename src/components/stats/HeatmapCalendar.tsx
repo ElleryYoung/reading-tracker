@@ -87,7 +87,7 @@ export default function HeatmapCalendar() {
       {/* empty overlay */}
       {empty && (
         <div className="absolute inset-0 flex flex-col items-center justify-center rounded-[14px] bg-card2/85 px-6 text-center backdrop-blur-[1px]">
-          <img src="/illu-empty-stats.png" alt="" className="h-[120px] w-[120px] object-contain" />
+          <img src={`${import.meta.env.BASE_URL}illu-empty-stats.png`} alt="" className="h-[120px] w-[120px] object-contain" />
           <p className="mt-3 text-[15px] leading-[1.6] text-ink-secondary">
             还没有阅读记录，从一次计时开始吧
           </p>

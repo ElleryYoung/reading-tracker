@@ -30,7 +30,7 @@ export function BookCover({
   }
   return (
     <div
-      style={{ width, height, backgroundImage: 'url(/cover-fallback.svg)', backgroundSize: 'cover' }}
+      style={{ width, height, backgroundImage: `url(${import.meta.env.BASE_URL}cover-fallback.svg)`, backgroundSize: 'cover' }}
       className={`relative flex shrink-0 items-center justify-center overflow-hidden rounded border border-line ${className}`}
     >
       <span

@@ -227,7 +227,7 @@ export default function AddBookPage() {
             className="flex flex-col items-center py-10 text-center"
           >
             <img
-              src="/illu-empty-search.png"
+              src={`${import.meta.env.BASE_URL}illu-empty-search.png`}
               alt=""
               width={150}
               height={150}
@@ -247,7 +247,7 @@ export default function AddBookPage() {
             className="flex flex-col items-center py-10 text-center"
           >
             <img
-              src="/illu-empty-search.png"
+              src={`${import.meta.env.BASE_URL}illu-empty-search.png`}
               alt=""
               width={150}
               height={150}

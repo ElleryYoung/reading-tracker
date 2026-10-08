@@ -137,7 +137,7 @@ function HeaderBanner() {
         className="overflow-hidden rounded border border-line"
       >
         <img
-          src="/illu-hero-stats.png"
+          src={`${import.meta.env.BASE_URL}illu-hero-stats.png`}
           alt=""
           className="max-h-[140px] w-full object-cover lg:max-h-[180px]"
         />
