@@ -1,0 +1,60 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 42 38% 93%;
+    --foreground: 218 81% 20%;
+    --card: 45 60% 98%;
+    --card-foreground: 218 81% 20%;
+    --popover: 45 60% 98%;
+    --popover-foreground: 218 81% 20%;
+    --primary: 218 81% 20%;
+    --primary-foreground: 42 38% 93%;
+    --secondary: 40 24% 90%;
+    --secondary-foreground: 218 81% 20%;
+    --muted: 40 24% 90%;
+    --muted-foreground: 228 10% 59%;
+    --accent: 36 19% 54%;
+    --accent-foreground: 42 38% 93%;
+    --destructive: 9 28% 51%;
+    --destructive-foreground: 42 38% 93%;
+    --border: 39 22% 81%;
+    --input: 39 22% 81%;
+    --ring: 218 81% 20%;
+    --radius: 0.875rem;
+    --sidebar-background: 45 60% 98%;
+    --sidebar-foreground: 218 40% 33%;
+    --sidebar-primary: 218 81% 20%;
+    --sidebar-primary-foreground: 42 38% 93%;
+    --sidebar-accent: 40 24% 90%;
+    --sidebar-accent-foreground: 218 81% 20%;
+    --sidebar-border: 39 22% 81%;
+    --sidebar-ring: 218 81% 20%;
+  }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply bg-paper text-ink-primary font-sans;
+    font-feature-settings: 'tnum' 0;
+  }
+
+  ::selection {
+    background: #c9bba0;
+    color: #0a2a5c;
+  }
+}
+
+@layer utilities {
+  .tnum {
+    font-variant-numeric: tabular-nums;
+  }
+  .label-eyebrow {
+    @apply text-[13px] leading-[1.4] font-medium tracking-[0.06em] uppercase;
+  }
+}
